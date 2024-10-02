@@ -2,24 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('CLONE SCM') {
+        stage('Clone SCM') {
             steps {
-                echo 'Cloning Mc-app project code'
-				git branch: 'main', url: 'https://github.com/devopstraininghub/mindcircuit13.git'
+                echo 'cloning code from Github'
+		git branch: 'main', url: 'https://github.com/ajayveesam/jenkins_project.git'
             }
         }
-		
-		stage('Build Artifact ') {
+        stage('Build Artifact') {
             steps {
-                echo 'generating artifact with maven build tool'
-				sh 'mvn clean install'
+                echo 'Building project with maven'
+		sh 'mvn clean install'
             }
         }
-		
-		stage('Deploy to tomcat') {
+        stage('Deploy Tomcat') {
             steps {
-                echo 'Deploying artifact to tomcat webserver '
-				deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://52.201.234.58:8091/')], contextPath: 'facebook-app', war: '**/*.war'
+                echo 'Deploying artifact to tomcat webbrowser'
+		deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://ec2-54-174-65-96.compute-1.amazonaws.com:8091/')], contextPath: 'facebook-app', war: '**/*.war'
             }
         }
     }
